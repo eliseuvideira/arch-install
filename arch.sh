@@ -13,10 +13,6 @@ mkfs.ext4 /dev/sda3
 mount /dev/sda3 /mnt
 mkdir /mnt/boot
 mount /dev/sda1 /mnt/boot
-cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.bak
-pacman -Syy
-pacman -S reflector
-reflector --verbose -c BR -f 12 -l 10 -n 12 --save /etc/pacman.d/mirrorlist
 pacstrap /mnt base base-devel linux linux-firmware zsh neovim
 genfstab -U /mnt >>/mnt/etc/fstab
 arch-chroot /mnt
