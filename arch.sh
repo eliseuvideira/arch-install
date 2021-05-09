@@ -30,7 +30,6 @@ passwd
 USER_NAME=eliseu
 useradd -m -G wheel -s /bin/zsh $USER_NAME
 passwd $USER_NAME
-EDITOR=nvim visudo
 sed -E -i 's/^# (%wheel ALL=\(ALL\) ALL)/\1/' /etc/sudoers
 mount -t efivarfs efivarfs /sys/firmware/efi/efivars
 pacman -S grub efibootmgr
