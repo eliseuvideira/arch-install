@@ -1,12 +1,42 @@
 #!/bin/sh
+
+check_internet() {
+  if ping -q -c 1 -W 1 archlinux.org >/dev/null; then
+    return 0;
+  fi
+  return 1;
+}
+
+write_partition_table() {
+  boot_size="$1"
+  swap_size="$2"
+  device="$3"
+  printf ",$boot_size,\n,$swap_size,82\n,," | sfdisk "$device" --label dos
+}
+
+set_ext2() {
+  partition="$1"
+  mkfs.ext2 "$partition"
+}
+
+set_swap() {
+  mkswap "$partition"
+  swapon "$partition"
+}
+
+set_ext4() {
+  partition="$1"
+  mkfs.ext4 "$partition"
+}
+
+write_partition_table 512M 4G /dev/sda
+set_ext2 /dev/sda1
+set_swap /dev/sda2
+set_ext4 /dev/sda3
+
 ping -c 3 archlinux.org
 timedatectl set-ntp true
 timedatectl status
-sgdisk -n 1:0:+512MiB  -t 1:ef00  -c 1:efi   /dev/sda
-sgdisk -n 2::+256MiB   -t 2:8300  -c 2:boot  /dev/sda
-sgdisk -n 3::+4GiB     -t 3:8200  -c 3:swap  /dev/sda
-sgdisk -n 4::          -t 4:8300  -c 4:root  /dev/sda
-sgdisk -p /dev/sda
 mkfs.fat -F32 /dev/sda1
 mkfs.ext4 /dev/sd2
 mkswap /dev/sda3
