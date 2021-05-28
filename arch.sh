@@ -1,3 +1,4 @@
+#!/bin/sh
 
 has_internet() {
   if ping -q -c 1 -W 1 archlinux.org >/dev/null; then
