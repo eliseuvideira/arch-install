@@ -51,6 +51,7 @@ zsh
 neovim
 networkmanager
 grub
+git
 EOF
 }
 
