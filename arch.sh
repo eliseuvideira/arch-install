@@ -2,9 +2,9 @@
 
 has_internet() {
   if ping -q -c 1 -W 1 archlinux.org >/dev/null; then
-    return 0;
+    return 0
   fi
-  return 1;
+  return 1
 }
 
 setup_date() {
@@ -16,7 +16,7 @@ write_partition_table() {
   swap_size="$2"
   device="$3"
   wipefs -a "${device}*"
-  printf ",$boot_size,\n,$swap_size,82\n,," | sfdisk "$device" --label dos
+  printf ",%s,\n,%s,82\n,," "$boot_size" "$swap_size" | sfdisk "$device" --label dos
 }
 
 set_ext2() {
@@ -71,6 +71,7 @@ set_ext4 /dev/sda3
 
 mount_partitions /dev/sda1 /dev/sda3 /mnt/arch
 
+# shellcheck disable=SC2046
 pacstrap /mnt/arch $(get_packages)
 
 genfstab -U /mnt/arch >>/mnt/arch/etc/fstab

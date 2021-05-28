@@ -13,7 +13,7 @@ setup_clock() {
 }
 
 setup_host() {
-  echo $1 >/etc/hostname
+  echo "$1" >/etc/hostname
   printf "%-12s%-12s\n%-12s%-12s\n%-12s%-12s\n" 127.0.0.1 localhost ::1 localhost 127.0.1.1 "$1" | sed 's/[[:space:]]*$//' >/etc/hosts
 }
 
